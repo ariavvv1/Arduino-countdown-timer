@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/a44e6710-87ac-4bed-8904-2238708e3e62
+
 # Arduino-countdown-timer
 this is what hardware I used in this project
 .LCD 16×2

@@ -1,18 +1,24 @@
 #include <LiquidCrystal.h>
 const int rs = 2, en = 3, d4 = 4, d5 = 5, d6 = 6, d7 = 7;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+//boolian variables mode of timer(secounds or minutes)
 bool minute_mode = false;
 bool secounde_mode = false;
+//some variables for input time from the user
   int minutes = 0;
   int secounds = 0;
+//this variable for set status of start/reset button
   int start = 3;
+//this variable for fixing the LCD bug
   int i = 1;
+//some variables for buttons
   const int plus_button = 8;
   const int minus_button = 9;
   const int minute_mode_button = 10;
   const int start_button = 11;
   const int secounde_mode_button = 12;
   const int buzzer = 13 ;
+
 void setup() {
   lcd.begin(16, 2);
   pinMode(buzzer,OUTPUT);
@@ -22,6 +28,7 @@ void setup() {
   pinMode(start_button,INPUT);
 }
 void loop() {
+  //setting up the LCD
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Choose mode");
@@ -32,8 +39,10 @@ void loop() {
    if(digitalRead(secounde_mode_button) == HIGH){
     secounde_mode = true;
   }
+  //when the minute_mode = true,the timer mode sets in minute mode
   while(minute_mode == true){
     if(i == 1){
+      //setting up the LCD
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("time:");
@@ -43,6 +52,7 @@ void loop() {
       lcd.print("mode:minutes");
       delay(250);
     }
+    //some if functions to make buttons work
     if(digitalRead(plus_button) == HIGH){
       minutes = minutes + 1;
       
@@ -51,6 +61,7 @@ void loop() {
       minutes = minutes - 1;
       
     }
+    //if the start button is pressd,counting down loop starts
     if(digitalRead(start_button) == HIGH && i == 1){
       start = 1;
       secounds = minutes * 60;
@@ -66,6 +77,7 @@ void loop() {
         secounds = secounds - 1;
         delay(1000);
       }
+       //this section of the code is for,when the counting is complete,its start beeping and break the countinuing the count for the preventing bugs
       if(secounds == 0){
         lcd.clear();
         lcd.setCursor(3,0);
@@ -74,6 +86,7 @@ void loop() {
         delay(300);
         digitalWrite(buzzer,HIGH);
       }
+      //this section of code is for reseting the program
       if(digitalRead(start_button) == HIGH){
         minutes = 0;
         secounds = 0;
@@ -84,8 +97,10 @@ void loop() {
       }
     }
   }
+    //when the secounde_mode = true,the timer mode sets in secounde mode
   while(secounde_mode == true){
     if(i == 1){
+      //setting up the LCD
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("time:");
@@ -95,6 +110,7 @@ void loop() {
       lcd.print("mode:secounds");
       delay(250);
     }
+    //some if functions to make buttons work
     if(digitalRead(plus_button) == HIGH){
       secounds = secounds + 1;
       
@@ -103,13 +119,15 @@ void loop() {
       secounds = secounds - 1;
       
     }
+    //if the start button is pressd,counting down loop starts
     if(digitalRead(start_button) == HIGH){
       start = 1;
       i = 0;
-    }
+    }   
     if(start == 1){
 
       if(secounds > 0){
+        //setting up the LCD
         lcd.clear();
         lcd.setCursor(0,0);
         lcd.print("countdown:");
@@ -118,6 +136,7 @@ void loop() {
         secounds = secounds - 1;
         delay(1000);
       }
+      //this section of the code is for,when the counting is complete,its start beeping and break the countinuing the count for the preventing bugs
       if(secounds == 0){
         lcd.clear();
         lcd.setCursor(3,0);
@@ -125,6 +144,7 @@ void loop() {
         start = 3;
         digitalWrite(buzzer,HIGH);
       }
+      //this section of code is for reseting the program
       if(digitalRead(start_button) == HIGH){
         minutes = 0;
         secounds = 0;
